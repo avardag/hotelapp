@@ -14,16 +14,32 @@ class RoomProvider extends Component {
     rooms: [],
     sortedRooms: [],
     featuredRooms: [],
-    loading: true
+    loading: true,
+    type: 'all',
+    capacity: 1,
+    price: 0,
+    minPrice: 0,
+    maxPrice: 0,
+    minSize: 0,
+    maxSize: 0,
+    breakfast: false,
+    pets: false,
   }
   componentDidMount() {
     let rooms = this.formatData(items);
     let featuredRooms = rooms.filter(room=> room.featured === true);
+    //get maxPrize, maxSize of rooms fetched from server
+    let maxPrice = Math.max(...rooms.map(room=> room.price));
+    let maxSize = Math.max(...rooms.map(room=> room.size));
+    //set State
     this.setState({
       rooms,
       sortedRooms: rooms,
       featuredRooms,
-      loading: false
+      loading: false,
+      price: maxPrice,
+      maxPrice,
+      maxSize
     })
   }
   //format data got from server to readable object structure
@@ -45,12 +61,37 @@ class RoomProvider extends Component {
     const room = tempRooms.find(room=> room.slug === slug);
     return room;
   }
+  //handle input change in filterRooms compnt
+  handleChange = (e)=>{
+    
+    //check if input type is checkbox 
+    const value = e.type ==="checkbox" ? e.target.checked : e.target.value;
+    const name = e.target.name;
+    this.setState({
+      [name]: value
+    }, this.filterRooms)
+  }
 
+  filterRooms = ()=>{
+    let tempRooms = [...this.state.rooms];
+    //apply filtering if type of rooms is anything but 'all'
+    if(this.state.type !== 'all'){
+      tempRooms = tempRooms.filter(room=> room.type === this.state.type)
+      
+    }
+    //filter by room capacity
+    let capacity = parseInt(this.state.capacity);
+    if(capacity !== 1){
+      tempRooms = tempRooms.filter((room)=> room.capacity === capacity)
+    }
+    this.setState({sortedRooms: tempRooms})
+  }
   render() {
     return (
         <RoomContext.Provider value={{
           ...this.state,
-          getRoom: this.getRoom
+          getRoom: this.getRoom,
+          handleChange: this.handleChange,
           }}
         >
           {this.props.children}
