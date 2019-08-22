@@ -61,6 +61,15 @@ class RoomProvider extends Component {
 //create consumer for RoomContext
 const RoomConsumer = RoomContext.Consumer;
 
+//HOC for consuming context in functional components
+export function withRoomConsumer(Component) {
+  return function ConsumerWrapper(props){
+    return <RoomConsumer>
+      {value=> < Component {...props} context={value} />}
+    </RoomConsumer>
+  }
+}
+
 export  {RoomProvider, RoomConsumer, RoomContext};
 
 //TODO: wrap all app in index.js with RoomProvider
