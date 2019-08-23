@@ -30,6 +30,7 @@ const RoomsFilter = (props) => {
       <option value={roomCapacity} key={i}>{roomCapacity}</option>
     ))
   }
+
   return (
     <section className="filter-container">
       <Title title="Search Rooms"/>
@@ -60,6 +61,69 @@ const RoomsFilter = (props) => {
           </select>
         </div>
         {/* end select input "type" of rooms */}
+        {/* Room price */}
+        <div className="form-group">
+          <label htmlFor="price">Price {context.price}</label>
+          <input 
+            type="range"
+            min={context.minPrice}
+            max={context.maxPrice}
+            name="price" 
+            id="price"
+            value={context.price}
+            onChange={context.handleChange}
+            className="form-control"
+          />
+        </div>
+        {/* End Room price */}
+        {/* Room size */}
+        <div className="form-group">
+          <label htmlFor="size">size {context.size}</label>
+          <div className="size-inputs">
+            <input 
+              type="number"
+              name="minSize" 
+              id="size"
+              value={context.minSize}
+              onChange={context.handleChange}
+              className="size-input"
+            />
+            <input 
+              type="number"
+              name="maxSize" 
+              id="size"
+              value={context.maxSize}
+              onChange={context.handleChange}
+              className="size-input"
+            />
+
+          </div>
+        </div>
+        {/* End Room size */}
+        {/* extras checkboxes */}
+        <div className="form-group">
+          <div className="single-extra">
+            <input 
+              type="checkbox" 
+              checked={context.breakfast}
+              id="breakfast"
+              name="breakfast"
+              onChange={context.handleChange}
+              />
+            <label htmlFor="breakfast">Breakfast</label>
+          </div>
+          <div className="single-extra">
+            <input 
+              type="checkbox" 
+              checked={context.pets}
+              id="pets"
+              name="pets"
+              onChange={context.handleChange}
+              />
+            <label htmlFor="pets">Pets</label>
+          </div>
+        </div>
+        {/* End extras checkboxes */}
       </form>
     </section>
   );
