@@ -13,7 +13,7 @@
 
 /src/images
 /src/data.js
-
+.env.development
 # misc
 .DS_Store
 .env.local
